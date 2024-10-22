@@ -39,7 +39,25 @@ public class PersistenciaJPA implements InterfaceDB{
 
     @Override
     public void persist(Object o) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+        entity = getEntityManager();
+        try{
+        entity.getTransaction().begin();
+        entity.persist(o);
+        entity.getTransaction().commit();
+        } catch (Exception e)
+        {
+            if(entity.getTransaction().isActive()){
+                entity.getTransaction().rollback();
+            }
+        }
+    }
+    
+    public EntityManager getEntityManager(){
+        if (entity == null || !entity.isOpen())
+        {
+            entity = factory.createEntityManager();
+        }
+        return entity;
     }
 
     @Override
