@@ -8,6 +8,10 @@ import java.util.logging.Logger;
 import model.Marca;
 import static model.Marca.HONDA;
 import model.Modelo;
+import model.Pessoa;
+import model.TipoVeiculo;
+import model.Veiculo;
+import model.VinculoPessoa;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,12 +41,25 @@ public class TestePersistencia {
     @Test
     public void testePersistencia(){
         Modelo m = new Modelo();
+        Pessoa p = new Pessoa();
+        Veiculo v = new Veiculo();
+        p.setNome("Jorge dos Santos");
+        p.setFone("54999999999");
+        p.setEmail("jorge@teste.com");
+        p.setVinculoPessoa(VinculoPessoa.ALUNO);
         m.setDescricao("Focus");
         m.setMarca(Marca.FORD);
+        v.setPlaca("AAA1A11");
+        v.setCor("Branco");
+        v.setModelo(m);
+        v.setTipoVeiculo(TipoVeiculo.CARRO);
+        v.setProprietario(p);
 //        m.setId(1);
         
         try {
             jpa.persist(m);
+            jpa.persist(p);
+            jpa.persist(v);
         } catch (Exception e) {
             System.err.println("Erro ao persistir modelo: "+m);
         }

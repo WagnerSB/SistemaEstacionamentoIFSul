@@ -4,28 +4,45 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-public class Veiculo {
+
+@Entity
+@Table(name = "tb_veiculo")
+public class Veiculo implements Serializable{
+    
+    @Id
     private String placa;
     private String cor;
+    
+    @Enumerated(EnumType.STRING)
     private TipoVeiculo tipoVeiculo;
     
-    
+    @OneToOne
     private Modelo modelo;
-    List<EntradaSaida> listaMovimentacoes;
+//    List<EntradaSaida> listaMovimentacoes;
+//    @JoinColumn(name = "proprietario")
+    @OneToOne
     private Pessoa proprietario;
     
     
     public Veiculo(){
-        listaMovimentacoes = new ArrayList<>();
+//        listaMovimentacoes = new ArrayList<>();
     }
 
     public Veiculo(String placa, TipoVeiculo tipoVeiculo) {
         this.placa = placa;
         this.tipoVeiculo = tipoVeiculo;
-        listaMovimentacoes = new ArrayList<>();
+//        listaMovimentacoes = new ArrayList<>();
     }
     
     
@@ -65,10 +82,15 @@ public class Veiculo {
         this.tipoVeiculo = tipoVeiculo;
     }
     
+     public void setProprietario(Pessoa proprietario) {
+        this.proprietario = proprietario;
+    }
+    
     
 //    Methods
-    public void addMovimentacao(EntradaSaida movimentacao)
-    {
-        listaMovimentacoes.add(movimentacao);
-    }
+//    public void addMovimentacao(EntradaSaida movimentacao)
+//    {
+//        listaMovimentacoes.add(movimentacao);
+//    }
+
 }
