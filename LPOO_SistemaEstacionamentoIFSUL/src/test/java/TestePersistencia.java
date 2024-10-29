@@ -5,10 +5,12 @@
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.EntradaSaida;
 import model.Marca;
 import static model.Marca.HONDA;
 import model.Modelo;
 import model.Pessoa;
+import model.TipoMovimentacao;
 import model.TipoVeiculo;
 import model.Veiculo;
 import model.VinculoPessoa;
@@ -54,12 +56,15 @@ public class TestePersistencia {
         v.setModelo(m);
         v.setTipoVeiculo(TipoVeiculo.CARRO);
         v.setProprietario(p);
+        EntradaSaida es = new EntradaSaida(TipoMovimentacao.ENTRADA, v);
+        
 //        m.setId(1);
         
         try {
             jpa.persist(m);
             jpa.persist(p);
             jpa.persist(v);
+            jpa.persist(es);
         } catch (Exception e) {
             System.err.println("Erro ao persistir modelo: "+m);
         }

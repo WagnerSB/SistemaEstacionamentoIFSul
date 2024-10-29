@@ -62,7 +62,17 @@ public class PersistenciaJPA implements InterfaceDB{
 
     @Override
     public void remover(Object o) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+        entity = getEntityManager();
+        try{
+        entity.getTransaction().begin();
+        entity.remove(o);
+        entity.getTransaction().commit();
+        } catch (Exception e)
+        {
+            if(entity.getTransaction().isActive()){
+                entity.getTransaction().rollback();
+            }
+        }
     }
     
 }

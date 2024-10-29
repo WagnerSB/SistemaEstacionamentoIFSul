@@ -5,13 +5,22 @@
 package model;
 
 import java.util.Date;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author 20231PF.CC0021
  */
+@Entity
+@DiscriminatorValue("veiculo_oficial")
 public class ESOficial extends EntradaSaida {
     private int kmRegistrado;
+    
+    @OneToOne
+    @JoinColumn(name="")
     private Pessoa motorista;
 
     public ESOficial(Pessoa motorista, TipoMovimentacao tipo, Veiculo veiculo) {
