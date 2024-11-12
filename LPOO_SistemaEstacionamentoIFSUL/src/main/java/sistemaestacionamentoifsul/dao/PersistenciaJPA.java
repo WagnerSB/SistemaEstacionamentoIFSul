@@ -4,21 +4,25 @@
  */
 package sistemaestacionamentoifsul.dao;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import model.Pessoa;
 
 /**
  *
  * @author 20231PF.CC0021
  */
-public class PersistenciaJPA implements InterfaceDB{
+public class PersistenciaJPA implements InterfaceDB {
+
     EntityManager entity;
     EntityManagerFactory factory;
-    
-    public PersistenciaJPA(){
+
+    public PersistenciaJPA() {
         factory = Persistence.createEntityManagerFactory("db_lpoo_estacionamento");
-        
+
         entity = factory.createEntityManager();
     }
 
@@ -40,21 +44,19 @@ public class PersistenciaJPA implements InterfaceDB{
     @Override
     public void persist(Object o) throws Exception {
         entity = getEntityManager();
-        try{
-        entity.getTransaction().begin();
-        entity.persist(o);
-        entity.getTransaction().commit();
-        } catch (Exception e)
-        {
-            if(entity.getTransaction().isActive()){
+        try {
+            entity.getTransaction().begin();
+            entity.persist(o);
+            entity.getTransaction().commit();
+        } catch (Exception e) {
+            if (entity.getTransaction().isActive()) {
                 entity.getTransaction().rollback();
             }
         }
     }
-    
-    public EntityManager getEntityManager(){
-        if (entity == null || !entity.isOpen())
-        {
+
+    public EntityManager getEntityManager() {
+        if (entity == null || !entity.isOpen()) {
             entity = factory.createEntityManager();
         }
         return entity;
@@ -63,16 +65,27 @@ public class PersistenciaJPA implements InterfaceDB{
     @Override
     public void remover(Object o) throws Exception {
         entity = getEntityManager();
-        try{
-        entity.getTransaction().begin();
-        entity.remove(o);
-        entity.getTransaction().commit();
-        } catch (Exception e)
-        {
-            if(entity.getTransaction().isActive()){
+        try {
+            entity.getTransaction().begin();
+            entity.remove(o);
+            entity.getTransaction().commit();
+        } catch (Exception e) {
+            if (entity.getTransaction().isActive()) {
                 entity.getTransaction().rollback();
             }
         }
     }
-    
+
+//    Funções para listar dados
+    public List<Pessoa> getPessoas() {
+        entity = getEntityManager();
+        try {
+            TypedQuery<Pessoa> query = entity.createQuery("SELECT p FROM Pessoa p", Pessoa.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar Pessoa: " + e);
+            return null;
+        }
+    }
+
 }
