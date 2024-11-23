@@ -8,7 +8,7 @@ package sistemaestacionamentoifsul.dao;
  *
  * @author 20231PF.CC0021
  */
-public interface InterfaceDB {
+public interface InterfaceBD {
     public Boolean conexaoAberta();
     public void fecharConexao();
     public Object find(Class c, Object id) throws Exception;

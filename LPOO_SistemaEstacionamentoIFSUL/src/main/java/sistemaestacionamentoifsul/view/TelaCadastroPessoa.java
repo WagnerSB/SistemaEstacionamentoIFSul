@@ -4,6 +4,8 @@
  */
 package sistemaestacionamentoifsul.view;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Pessoa;
 import model.VinculoPessoa;
 import sistemaestacionamentoifsul.dao.PersistenciaJPA;
@@ -13,9 +15,10 @@ import sistemaestacionamentoifsul.dao.PersistenciaJPA;
  * @author 20231PF.CC0021
  */
 public class TelaCadastroPessoa extends javax.swing.JDialog {
+    private Pessoa pessoa;
     PersistenciaJPA jpa;
     
-    private Pessoa pessoa;
+    
 
     public Pessoa getPessoa() {
         return pessoa;
@@ -23,6 +26,10 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
 
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
+        txtNome.setText(pessoa.getNome());
+        txtFone.setText(pessoa.getFone());
+        txtEmail.setText(pessoa.getEmail());
+        cmbVinculos.setSelectedItem(pessoa.getVinculoPessoa());
     }
     
     
@@ -34,6 +41,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         jpa = new PersistenciaJPA();
+        carregarVinculos();
     }
 
     /**
@@ -54,7 +62,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         txtEmail = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        jcbVinculoPessoa = new javax.swing.JComboBox<>(VinculoPessoa.values());
+        cmbVinculos = new javax.swing.JComboBox<>();
         lblVinculoPessoa = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -109,7 +117,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                                 .addComponent(txtNome)
                                 .addComponent(txtFone)
                                 .addComponent(txtEmail)
-                                .addComponent(jcbVinculoPessoa, 0, 300, Short.MAX_VALUE)))))
+                                .addComponent(cmbVinculos, 0, 300, Short.MAX_VALUE)))))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -131,7 +139,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcbVinculoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbVinculos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblVinculoPessoa))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -144,21 +152,21 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if(pessoa == null)
-        {
+        if(pessoa == null) {
             pessoa = new Pessoa();
         }
         
         pessoa.setNome(txtNome.getText());
         pessoa.setFone(txtFone.getText());
         pessoa.setEmail(txtEmail.getText());
-        pessoa.setVinculoPessoa((VinculoPessoa) jcbVinculoPessoa.getSelectedItem());
+        pessoa.setVinculoPessoa((VinculoPessoa) cmbVinculos.getSelectedItem());
         
         jpa.conexaoAberta();
         try {
             jpa.persist(pessoa);
         } catch (Exception e) {
-            System.out.println("Erro ao adicionar Pessoa: "+e);
+            Logger.getLogger(TelaPessoa.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Erro ao persistir pessoa: "+pessoa+" \n Erro: "+e);
         }
         jpa.fecharConexao();
         dispose();
@@ -169,6 +177,7 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
@@ -210,11 +219,18 @@ public class TelaCadastroPessoa extends javax.swing.JDialog {
             }
         });
     }
+    
+    public void carregarVinculos(){
+        cmbVinculos.removeAllItems();
+        for(VinculoPessoa item: VinculoPessoa.values()){
+            cmbVinculos.addItem(item);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JComboBox<VinculoPessoa> jcbVinculoPessoa;
+    private javax.swing.JComboBox<VinculoPessoa> cmbVinculos;
     private javax.swing.JLabel lblCadastroPessoa;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFone;

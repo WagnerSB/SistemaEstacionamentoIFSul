@@ -4,9 +4,6 @@
  */
 package sistemaestacionamentoifsul.view;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import model.Pessoa;
@@ -26,10 +23,11 @@ public class TelaPessoa extends javax.swing.JFrame {
     public TelaPessoa() {
         initComponents();
         
-        cmbVinculoPessoa.addItem(null);
+//        cmbVinculoPessoa.addItem(null);
         
         jpa = new PersistenciaJPA();
         carregarPessoasCadastradas();
+        carregarVinculos();
     }
 
     /**
@@ -41,13 +39,12 @@ public class TelaPessoa extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         areaFiltros = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        cmbVinculoPessoa = new javax.swing.JComboBox<>(VinculoPessoa.values());
-        lblVinculo = new javax.swing.JLabel();
+        lblBuscaNome = new javax.swing.JLabel();
+        cmbVinculoPessoa = new javax.swing.JComboBox<>();
+        lblBuscaVinculo = new javax.swing.JLabel();
         txtBuscaNome = new javax.swing.JTextField();
-        btnFiltrar = new javax.swing.JButton();
         areaListagem = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstPessoas = new javax.swing.JList<>();
@@ -58,29 +55,25 @@ public class TelaPessoa extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setText("Pessoas Cadastradas");
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTitulo.setText("Pessoas Cadastradas");
 
-        jLabel2.setText("Nome: ");
+        lblBuscaNome.setText("Nome: ");
 
-        cmbVinculoPessoa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbVinculoPessoaActionPerformed(evt);
+        cmbVinculoPessoa.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbVinculoPessoaItemStateChanged(evt);
             }
         });
 
-        lblVinculo.setText("Vínculo:");
+        lblBuscaVinculo.setText("Vínculo:");
 
-        txtBuscaNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBuscaNomeActionPerformed(evt);
+        txtBuscaNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtBuscaNomeKeyPressed(evt);
             }
-        });
-
-        btnFiltrar.setText("Filtrar");
-        btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFiltrarActionPerformed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscaNomeKeyReleased(evt);
             }
         });
 
@@ -89,28 +82,26 @@ public class TelaPessoa extends javax.swing.JFrame {
         areaFiltrosLayout.setHorizontalGroup(
             areaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, areaFiltrosLayout.createSequentialGroup()
-                .addComponent(jLabel2)
+                .addComponent(lblBuscaNome)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBuscaNome, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblVinculo)
+                .addComponent(txtBuscaNome, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(lblBuscaVinculo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbVinculoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnFiltrar)
-                .addContainerGap())
+                .addGap(41, 41, 41))
         );
         areaFiltrosLayout.setVerticalGroup(
             areaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, areaFiltrosLayout.createSequentialGroup()
                 .addGap(0, 113, Short.MAX_VALUE)
-                .addGroup(areaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtBuscaNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(areaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(areaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cmbVinculoPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblVinculo)
-                        .addComponent(btnFiltrar))))
+                        .addComponent(lblBuscaVinculo))
+                    .addGroup(areaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblBuscaNome)
+                        .addComponent(txtBuscaNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         jScrollPane1.setViewportView(lstPessoas);
@@ -121,8 +112,8 @@ public class TelaPessoa extends javax.swing.JFrame {
             areaListagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(areaListagemLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         areaListagemLayout.setVerticalGroup(
             areaListagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,6 +130,11 @@ public class TelaPessoa extends javax.swing.JFrame {
         });
 
         btnEditarPessoa.setText("Editar");
+        btnEditarPessoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarPessoaActionPerformed(evt);
+            }
+        });
 
         btnRemoverPessoa.setText("Remover");
         btnRemoverPessoa.addActionListener(new java.awt.event.ActionListener() {
@@ -156,7 +152,7 @@ public class TelaPessoa extends javax.swing.JFrame {
                 .addComponent(btnNovaPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55)
                 .addComponent(btnEditarPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnRemoverPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -181,7 +177,7 @@ public class TelaPessoa extends javax.swing.JFrame {
                     .addComponent(areaFiltros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(areaBotoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(lblTitulo)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(areaListagem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -189,7 +185,7 @@ public class TelaPessoa extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(areaFiltros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -202,10 +198,6 @@ public class TelaPessoa extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtBuscaNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscaNomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscaNomeActionPerformed
-
     private void btnNovaPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaPessoaActionPerformed
         TelaCadastroPessoa telaCadastro = new TelaCadastroPessoa(this, rootPaneCheckingEnabled);
         telaCadastro.setVisible(true);
@@ -214,41 +206,78 @@ public class TelaPessoa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNovaPessoaActionPerformed
 
     private void btnRemoverPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverPessoaActionPerformed
-        Pessoa pessoa = lstPessoas.getSelectedValue();
-        if (pessoa == null) {
-                JOptionPane.showMessageDialog(this, "Por favor, selecione uma pessoa para remover.", "Aviso", JOptionPane.WARNING_MESSAGE);
-                return;
+        Pessoa pessoaSel = lstPessoas.getSelectedValue();
+        if (pessoaSel != null) {
+            System.out.println("Pessoa: " + pessoaSel.getId());
+            try {
+                jpa.conexaoAberta();
+
+                int delOp = JOptionPane.showConfirmDialog(this,
+                        "Tem certeza que deseja remover " + pessoaSel.getNome() + "?");
+                if (delOp == JOptionPane.YES_OPTION) {
+                    jpa.remover(pessoaSel);
+                }
+
+                jpa.fecharConexao();
+                carregarPessoasCadastradas();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao remover pessoa " + pessoaSel + "\n" + e);
             }
-        
-        int resposta = JOptionPane.showConfirmDialog(this, 
-        "Tem certeza que deseja remover a pessoa: " + pessoa.getNome() + "?", 
-        "Confirmar Remoção", JOptionPane.YES_NO_OPTION);
-        
-        if (resposta != JOptionPane.YES_OPTION)
-            return;
-        
-        jpa.conexaoAberta();
-        try {
-            
-            jpa.remover(pessoa);
-            carregarPessoasCadastradas();
-            System.out.println("AAAAAAAAAAAA");
-            
-        } catch (Exception e) {
-            System.out.println("Erro ao remover pessoa: "+e);
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma pessoa para remover");
         }
-        jpa.fecharConexao();
     }//GEN-LAST:event_btnRemoverPessoaActionPerformed
+ 
+                                     
+    
+    private void btnEditarPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPessoaActionPerformed
+        Pessoa pessoaSel = lstPessoas.getSelectedValue();
+        if (pessoaSel != null) {
+            TelaCadastroPessoa telaEdt = new TelaCadastroPessoa(this, rootPaneCheckingEnabled);
+            telaEdt.setPessoa(pessoaSel);
+            telaEdt.setVisible(true);
+            
+            
+            carregarPessoasCadastradas();
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma pessoa para Editar");
+        }
+    }//GEN-LAST:event_btnEditarPessoaActionPerformed
 
-    private void cmbVinculoPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbVinculoPessoaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbVinculoPessoaActionPerformed
+    private void txtBuscaNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaNomeKeyPressed
+        
+    }//GEN-LAST:event_txtBuscaNomeKeyPressed
 
-    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        String nome = txtBuscaNome.getText();
-        VinculoPessoa vinculo = (VinculoPessoa) cmbVinculoPessoa.getSelectedItem();
-        buscarPorNome(nome, vinculo);
-    }//GEN-LAST:event_btnFiltrarActionPerformed
+    private void txtBuscaNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaNomeKeyReleased
+        if(txtBuscaNome.getText().trim().isEmpty()){
+            carregarPessoasCadastradas();
+        } else{
+            jpa.conexaoAberta();
+            DefaultListModel modeloLista = new DefaultListModel();
+            modeloLista.addAll(jpa.getPessoas(txtBuscaNome.getText().trim()));
+            System.out.println("Pessoas carregadas: "+jpa.getPessoas(txtBuscaNome.getText().trim()));
+            lstPessoas.setModel(modeloLista);
+
+            jpa.fecharConexao();
+        }
+    }//GEN-LAST:event_txtBuscaNomeKeyReleased
+
+    private void cmbVinculoPessoaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbVinculoPessoaItemStateChanged
+        VinculoPessoa vinculoSel = (VinculoPessoa) cmbVinculoPessoa.getSelectedItem();
+        if (vinculoSel == null) {
+            carregarPessoasCadastradas();
+        } else {
+            jpa.conexaoAberta();
+
+            DefaultListModel modeloLista = new DefaultListModel();
+            modeloLista.addAll(jpa.getPessoas(vinculoSel));
+            lstPessoas.setModel(modeloLista);
+
+            jpa.fecharConexao();
+        }
+    }//GEN-LAST:event_cmbVinculoPessoaItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -286,17 +315,7 @@ public class TelaPessoa extends javax.swing.JFrame {
     }
     
     
-    
-    public void buscarPorNome(String nome, VinculoPessoa vinculo)
-    {
-        jpa.conexaoAberta();
-        
-        DefaultListModel modeloLista = new DefaultListModel();
-        modeloLista.addAll(jpa.getPessoasPorNomeEVinculo(nome, vinculo));
-        lstPessoas.setModel(modeloLista);
-        
-        jpa.fecharConexao();
-    }
+  
     
     public void carregarPessoasCadastradas() {
         jpa.conexaoAberta();
@@ -307,20 +326,27 @@ public class TelaPessoa extends javax.swing.JFrame {
         
         jpa.fecharConexao();
     }
+    
+    public void carregarVinculos() {
+        cmbVinculoPessoa.removeAllItems();
+        cmbVinculoPessoa.addItem(null);
+        for (VinculoPessoa item : VinculoPessoa.values()) {
+            cmbVinculoPessoa.addItem(item);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaBotoes;
     private javax.swing.JPanel areaFiltros;
     private javax.swing.JPanel areaListagem;
     private javax.swing.JButton btnEditarPessoa;
-    private javax.swing.JButton btnFiltrar;
     private javax.swing.JButton btnNovaPessoa;
     private javax.swing.JButton btnRemoverPessoa;
     private javax.swing.JComboBox<VinculoPessoa> cmbVinculoPessoa;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblVinculo;
+    private javax.swing.JLabel lblBuscaNome;
+    private javax.swing.JLabel lblBuscaVinculo;
+    private javax.swing.JLabel lblTitulo;
     private javax.swing.JList<Pessoa> lstPessoas;
     private javax.swing.JTextField txtBuscaNome;
     // End of variables declaration//GEN-END:variables

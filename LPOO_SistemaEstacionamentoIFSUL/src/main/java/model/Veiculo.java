@@ -7,6 +7,7 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -27,13 +28,17 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tb_veiculo")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "veiculo", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "tipo_veiculo", discriminatorType = DiscriminatorType.STRING)
 public class Veiculo implements Serializable{
     
-    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id
     private int id;
+    
+    @Column(nullable = false, length = 7)
     private String placa;
+    
+    @Column(length = 20)
     private String cor;
     
     @Enumerated(EnumType.STRING)
@@ -64,6 +69,10 @@ public class Veiculo implements Serializable{
     
     
 //    Getters
+    public int getId() {
+        return id;
+    }
+    
     public String getPlaca() {
         return placa;
     }
@@ -80,8 +89,16 @@ public class Veiculo implements Serializable{
         return tipoVeiculo;
     }
     
+    public Pessoa getProprietario() {
+        return proprietario;
+    }
+    
     
 //    Setters
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public void setPlaca(String placa) {
         this.placa = placa;
     }
@@ -107,6 +124,10 @@ public class Veiculo implements Serializable{
     public void addMovimentacao(EntradaSaida movimentacao)
     {
         listaMovimentacoes.add(movimentacao);
+    }
+    
+    public List<EntradaSaida> getListaMovimentacoes() {
+        return listaMovimentacoes;
     }
 
 }

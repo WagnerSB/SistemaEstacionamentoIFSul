@@ -11,24 +11,28 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import model.Pessoa;
 import model.VinculoPessoa;
+import sistemaestacionamentoifsul.dao.InterfaceBD;
 
 /**
  *
- * @author 20231PF.CC0021
+ * @author vanessalagomachado
  */
-public class PersistenciaJPA implements InterfaceDB {
+public class PersistenciaJPA implements InterfaceBD {
 
     EntityManager entity;
     EntityManagerFactory factory;
 
     public PersistenciaJPA() {
-        factory = Persistence.createEntityManagerFactory("db_lpoo_estacionamento");
-
+        //parametro: é o nome da unidade de persistencia (Persistence Unit)
+        factory
+                = Persistence.createEntityManagerFactory("db_lpoo_estacionamento");
+        //conecta no bd e executa a estratégia de geração.
         entity = factory.createEntityManager();
     }
 
     @Override
     public Boolean conexaoAberta() {
+
         return entity.isOpen();
     }
 
@@ -39,28 +43,26 @@ public class PersistenciaJPA implements InterfaceDB {
 
     @Override
     public Object find(Class c, Object id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void persist(Object o) throws Exception {
+        
         entity = getEntityManager();
         try {
             entity.getTransaction().begin();
-            entity.persist(o);
+            if (!entity.contains(o)) {;
+                o = entity.merge(o);
+            } else {
+                entity.persist(o);
+            }
             entity.getTransaction().commit();
         } catch (Exception e) {
             if (entity.getTransaction().isActive()) {
                 entity.getTransaction().rollback();
             }
         }
-    }
-
-    public EntityManager getEntityManager() {
-        if (entity == null || !entity.isOpen()) {
-            entity = factory.createEntityManager();
-        }
-        return entity;
     }
 
     @Override
@@ -68,41 +70,76 @@ public class PersistenciaJPA implements InterfaceDB {
         entity = getEntityManager();
         try {
             entity.getTransaction().begin();
+            if (!entity.contains(o)) {
+                o = entity.merge(o); // Anexa o objeto ao contexto de persistência, se necessário
+            }
             entity.remove(o);
             entity.getTransaction().commit();
         } catch (Exception e) {
+            System.err.println("Erro ao remover item: "+e);
             if (entity.getTransaction().isActive()) {
                 entity.getTransaction().rollback();
             }
         }
     }
 
-//    Funções para listar dados
-    public List<Pessoa> getPessoas() {
-        entity = getEntityManager();
-        try {
-            TypedQuery<Pessoa> query = entity.createQuery("SELECT p FROM Pessoa p", Pessoa.class);
-            return query.getResultList();
-        } catch (Exception e) {
-            System.out.println("Erro ao buscar Pessoa: " + e);
-            return null;
+    /*
+    Todos os métodos agora chamam getEntityManager() 
+    para garantir que o EntityManager esteja sempre aberto e 
+    pronto para uso.
+     */
+    public EntityManager getEntityManager() {
+        if (entity == null || !entity.isOpen()) {
+            entity = factory.createEntityManager();
         }
-    }
-    
-    public List<Pessoa> getPessoasPorNomeEVinculo(String nome, VinculoPessoa vinculo) {
-    EntityManager em = getEntityManager();
-    if (vinculo!=null){
-    String query = "SELECT p FROM Pessoa p WHERE p.nome LIKE :nome AND p.vinculoPessoa = :vinculo";
-    return em.createQuery(query, Pessoa.class)
-             .setParameter("nome", "%" + nome + "%")
-             .setParameter("vinculo", vinculo)
-             .getResultList();
-    } else{
-        String query = "SELECT p FROM Pessoa p WHERE p.nome LIKE :nome";
-        return em.createQuery(query, Pessoa.class)
-                 .setParameter("nome", "%" + nome + "%")
-                 .getResultList();
-    }
+        return entity;
     }
 
+    // funções para listar dados 
+    public List<Pessoa> getPessoas() {
+        entity = getEntityManager();
+
+        try {
+            TypedQuery<Pessoa> query
+                    = entity.createQuery("Select p from Pessoa p", Pessoa.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Pessoas: " + e);
+            return null;
+        }
+
+    }
+
+    
+    public List<Pessoa> getPessoas(VinculoPessoa vinculoSelecionado) {
+        entity = getEntityManager();
+
+        try {
+            TypedQuery<Pessoa> query
+                    = entity.createQuery("Select p from Pessoa p where p.vinculoPessoa = '"
+                            +vinculoSelecionado+"'", 
+                            Pessoa.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Pessoas: " + e);
+            return null;
+        }
+
+    }
+    
+    public List<Pessoa> getPessoas(String nome) {
+        entity = getEntityManager();
+
+        try {
+            TypedQuery<Pessoa> query
+                    = entity.createQuery("Select p from Pessoa p where lower(p.nome) LIKE :n", 
+                            Pessoa.class);
+            query.setParameter("n", "%"+nome.toLowerCase()+"%");
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Pessoas: " + e);
+            return null;
+        }
+
+    }
 }
