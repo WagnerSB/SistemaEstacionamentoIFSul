@@ -107,7 +107,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_miPessoaActionPerformed
 
     private void miVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVeiculoActionPerformed
-        // TODO add your handling code here:
+        TelaVeiculo telaVeiculo = new TelaVeiculo();
+        telaVeiculo.setVisible(true);
     }//GEN-LAST:event_miVeiculoActionPerformed
 
     private void miEntradaVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEntradaVeiculoActionPerformed

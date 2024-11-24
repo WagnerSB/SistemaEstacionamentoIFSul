@@ -52,5 +52,11 @@ public class Modelo implements Serializable{
     }
     
     
+    @Override
+    public String toString()
+    {
+        return descricao+" - "+marca;
+    }
+    
     
 }

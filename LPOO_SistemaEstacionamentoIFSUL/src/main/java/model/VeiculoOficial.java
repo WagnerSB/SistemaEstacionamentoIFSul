@@ -4,18 +4,19 @@
  */
 package model;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "tb_veiculosoficiais")
+@DiscriminatorValue("OFICIAL")
 public class VeiculoOficial extends Veiculo{
-    private String renavam;
+    private String renavan;
     private String chassi;
 
     public String getRenavam() {
-        return renavam;
+        return renavan;
     }
 
     public String getChassi() {
@@ -24,8 +25,8 @@ public class VeiculoOficial extends Veiculo{
     
     
     
-    public void setRenavam(String renavam) {
-        this.renavam = renavam;
+    public void setRenavan(String renavan) {
+        this.renavan = renavan;
     }
 
     public void setChassi(String chassi) {

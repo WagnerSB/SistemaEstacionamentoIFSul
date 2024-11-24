@@ -66,6 +66,18 @@ public class Veiculo implements Serializable{
         listaMovimentacoes = new ArrayList<>();
     }
     
+    @Override
+    public String toString()
+    {
+        String tipo = "Normal";  // Valor padrão, se não for oficial
+
+        if (this instanceof VeiculoOficial) {
+            tipo = "Oficial";
+        }
+        return "Placa: " + placa + ", Proprietário: " + (proprietario != null ? proprietario.getNome() : "Desconhecido") + ", Tipo: " + tipo;
+        
+    }
+    
     
     
 //    Getters
