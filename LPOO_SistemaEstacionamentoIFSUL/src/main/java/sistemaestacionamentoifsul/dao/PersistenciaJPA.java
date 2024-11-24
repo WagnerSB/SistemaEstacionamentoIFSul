@@ -87,13 +87,14 @@ public class PersistenciaJPA implements InterfaceBD {
     @Override
     public void remover(Object o) throws Exception {
         entity = getEntityManager();
+        System.out.println("Object: "+o);
         try {
             entity.getTransaction().begin();
             if (!entity.contains(o)) {
-                o = entity.merge(o); // Anexa o objeto ao contexto de persistência, se necessário
-            } else{
-                entity.remove(o);
+                o = entity.merge(o);
             }
+            entity.remove(o);
+            entity.flush();
             entity.getTransaction().commit();
         } catch (Exception e) {
             System.err.println("Erro ao remover item: " + e);

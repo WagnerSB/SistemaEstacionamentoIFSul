@@ -7,6 +7,7 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -21,7 +22,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -51,7 +51,7 @@ public class Veiculo implements Serializable{
     @OneToMany(mappedBy = "veiculo")
     List<EntradaSaida> listaMovimentacoes;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "veiculo_proprietario")
     private Pessoa proprietario;
     
@@ -105,7 +105,7 @@ public class Veiculo implements Serializable{
         return proprietario;
     }
     
-    
+      
 //    Setters
     public void setId(int id) {
         this.id = id;

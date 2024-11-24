@@ -36,7 +36,7 @@ public class TelaCadastroVeiculo extends javax.swing.JDialog {
         txtCor.setText(veiculo.getCor());
         cmbTipoVeiculo.setSelectedItem(veiculo.getTipoVeiculo());
         cmbProprietario.setSelectedItem(veiculo.getProprietario());
-        cmbModelo.setSelectedItem(veiculo.getModelo());
+        cmbModelo.setSelectedItem(veiculo.getModelo());  
     }
     
     
