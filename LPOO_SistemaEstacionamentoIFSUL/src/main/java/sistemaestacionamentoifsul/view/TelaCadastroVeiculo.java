@@ -35,8 +35,17 @@ public class TelaCadastroVeiculo extends javax.swing.JDialog {
         txtPlaca.setText(veiculo.getPlaca());
         txtCor.setText(veiculo.getCor());
         cmbTipoVeiculo.setSelectedItem(veiculo.getTipoVeiculo());
-        cmbProprietario.setSelectedItem(veiculo.getProprietario());
-        cmbModelo.setSelectedItem(veiculo.getModelo());  
+        cmbProprietario.setSelectedItem((Pessoa)veiculo.getProprietario());
+        cmbModelo.setSelectedItem(veiculo.getModelo());
+        if(veiculo instanceof VeiculoOficial)
+        {
+            cbVeiculoOficial.setSelected(true);
+            txtChassi.setEnabled(true);
+            txtRenavan.setEnabled(true);
+            txtChassi.setText(((VeiculoOficial) veiculo).getChassi());
+            txtRenavan.setText(((VeiculoOficial) veiculo).getRenavan());
+        }
+        
     }
     
     
@@ -63,6 +72,7 @@ public class TelaCadastroVeiculo extends javax.swing.JDialog {
     
     public void carregarProprietarios(){
         cmbProprietario.removeAllItems();
+        cmbProprietario.addItem(null);
         jpa.conexaoAberta();
         
         List<Pessoa> proprietarios = jpa.getPessoas();

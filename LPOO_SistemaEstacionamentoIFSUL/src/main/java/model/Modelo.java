@@ -5,6 +5,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,6 +58,38 @@ public class Modelo implements Serializable{
     {
         return descricao+" - "+marca;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + this.id;
+        hash = 29 * hash + Objects.hashCode(this.descricao);
+        hash = 29 * hash + Objects.hashCode(this.marca);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Modelo other = (Modelo) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.descricao, other.descricao)) {
+            return false;
+        }
+        return this.marca == other.marca;
+    }
+
+    
     
     
 }

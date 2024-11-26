@@ -15,7 +15,7 @@ public class VeiculoOficial extends Veiculo{
     private String renavan;
     private String chassi;
 
-    public String getRenavam() {
+    public String getRenavan() {
         return renavan;
     }
 

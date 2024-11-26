@@ -7,6 +7,7 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -51,7 +52,7 @@ public class Veiculo implements Serializable{
     @OneToMany(mappedBy = "veiculo")
     List<EntradaSaida> listaMovimentacoes;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "veiculo_proprietario")
     private Pessoa proprietario;
     
@@ -141,5 +142,33 @@ public class Veiculo implements Serializable{
     public List<EntradaSaida> getListaMovimentacoes() {
         return listaMovimentacoes;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 53 * hash + this.id;
+        hash = 53 * hash + Objects.hashCode(this.placa);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Veiculo other = (Veiculo) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return Objects.equals(this.placa, other.placa);
+    }
+    
+    
 
 }
